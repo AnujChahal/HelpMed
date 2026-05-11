@@ -1,0 +1,192 @@
+package com.synac.helpmed.ui.view.medicineScreen
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.NavKey
+import com.synac.helpmed.data.MedicineDataClass
+import com.synac.helpmed.navigation.MedicineDetailDestination
+import com.synac.helpmed.ui.viewModel.MedicineViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MedicineListScreen(
+    onNavigate: (NavKey) -> Unit,
+    medicineViewModel: MedicineViewModel
+) {
+    val medicines by medicineViewModel.filteredMedicines.collectAsStateWithLifecycle()
+    val search by medicineViewModel.searchQuery.collectAsStateWithLifecycle()
+    val categories by medicineViewModel.allCategories.collectAsStateWithLifecycle()
+    val selectCategory by medicineViewModel.selectedCategory.collectAsStateWithLifecycle()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFf1f3f5))
+            .statusBarsPadding()
+    ) {
+        TopAppBar(
+            title = {
+                Text(
+                    text = "Medicines",
+                    color = Color.Black,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+        )
+        OutlinedTextField(
+            value = search,
+            onValueChange = medicineViewModel::onSearchChange,
+            placeholder = { Text(text = "Search medicines...", color = Color.Black) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search, contentDescription = null
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+                .height(56.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.LightGray,
+                focusedLeadingIconColor = Color.Black,
+                unfocusedLeadingIconColor = Color.Black
+            ),
+            singleLine = true
+        )
+        FilterChips(
+            categories = categories,
+            selected = selectCategory,
+            onSelected = medicineViewModel::onCategorySelected
+        )
+        LazyColumn {
+            items(medicines) { medicine ->
+                MedicineCard(
+                    onNavigate = onNavigate,
+                    medicine = medicine,
+                    medicineViewModel = medicineViewModel
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun FilterChips(
+    categories: List<String>,
+    selected: String,
+    onSelected: (String) -> Unit
+){
+    LazyRow(
+        modifier = Modifier.padding(vertical = 10.dp)
+    ){
+        items(categories) { category->
+            FilterChip(
+                selected = category == selected,
+                onClick = { onSelected(category) },
+                label = { Text(category) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = Color(0xFF22c55e),
+                    selectedLabelColor = Color.White,
+                    disabledLabelColor = Color(0xFF686f89),
+                    disabledContainerColor = Color(0xFFffffff)
+                ),
+                modifier = Modifier.padding(horizontal = 6.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun MedicineCard(
+    onNavigate: (NavKey) -> Unit,
+    medicine: MedicineDataClass,
+    medicineViewModel: MedicineViewModel
+){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp, vertical = 12.dp)
+            .clickable{
+                medicineViewModel.selectedMedicine(medicine.medicineName)
+                onNavigate(MedicineDetailDestination)
+            },
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(Color(0xFFffffff))
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+            ) {
+                Text(
+                    text = medicine.medicineName,
+                    fontSize = 20.sp,
+                    color = Color(0xFF22c55e),
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    text = medicine.description,
+                    fontSize = 14.sp,
+                    color = Color(0xFF686f89),
+                    maxLines = 2
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color(0xFFb0b7c4),
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(end = 16.dp)
+            )
+        }
+    }
+}
