@@ -22,27 +22,9 @@
 
 ## 📽️ Demo
 
-https://github.com/AnujChahal/HelpMed/assets/YOUR_ASSET_ID/Screen_Recording_2026-05-11_110500.mp4
-
-<!--
-  ☝️ TO ACTIVATE THIS VIDEO — one simple step:
-  1. Open https://github.com/AnujChahal/HelpMed/issues/new
-  2. Drag & drop your  Screen_Recording_2026-05-11_110500.mp4  into the comment box
-  3. Wait for GitHub to upload it — it generates a URL like:
-       https://github.com/user-attachments/assets/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-  4. Replace the URL on the line above with that URL
-  5. No need to submit the issue — just copy the link and close the tab!
--->
-
----
-
-## 📱 Screenshots
-
-| Emergency Contacts | Articles | Article Detail | Medicines | Medicine Detail |
-|:---:|:---:|:---:|:---:|:---:|
-| ![Emergency](screenshots/emergency.png) | ![Articles](screenshots/articles.png) | ![Article Detail](screenshots/article_detail.png) | ![Medicines](screenshots/medicines.png) | ![Medicine Detail](screenshots/medicine_detail.png) |
-
-> 💡 Place your screenshots in a `/screenshots` folder at the root of the repository.
+<p align="center">
+  <img src="" width="260"/>
+</p>Help He
 
 ---
 
