@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -57,7 +58,7 @@ fun ArticleDetailScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxHeight()
             .background(Color(0xFFf1f3f5))
             .statusBarsPadding()
     ) {

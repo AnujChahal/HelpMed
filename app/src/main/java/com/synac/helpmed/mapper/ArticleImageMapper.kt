@@ -17,9 +17,22 @@ fun ArticleDataClass.toUiModel(): ArticleUiDataClass {
 }
 
 private fun String.toDrawableRes(): Int {
-    return try {
-        R.drawable::class.java.getField(this).getInt(null)
-    } catch (e: Exception) {
-        R.drawable.health //change when article will be added
+    return when(this) {
+        "cardiovascular" -> R.drawable.cardiovascular
+        "diabetes" -> R.drawable.diabetes
+        "epilepsy" -> R.drawable.epilepsy
+        "asthma" -> R.drawable.asthma
+        "cancer" -> R.drawable.cancer
+        "alzheimer" -> R.drawable.alzheimer
+        "tuberculosis" -> R.drawable.tuberculosis
+        "hypertension" -> R.drawable.hypertension
+        "kidney" -> R.drawable.kidney
+        "liver" -> R.drawable.liver
+        "migraine" -> R.drawable.migraine
+        "anemia" -> R.drawable.anemia
+        "osteoporosis" -> R.drawable.osteoporosis
+        "depression" -> R.drawable.depression
+        "pneumonia" -> R.drawable.pneumonia
+        else -> R.drawable.health
     }
 }
